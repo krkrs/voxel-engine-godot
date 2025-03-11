@@ -1,0 +1,6 @@
+[gd_resource type="ORMMaterial3D" format=3 uid="uid://do6xnywx0b62x"]
+
+[resource]
+vertex_color_use_as_albedo = true
+emission = Color(0.482353, 0.223529, 0.298039, 1)
+emission_on_uv2 = true

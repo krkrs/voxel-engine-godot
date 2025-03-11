@@ -1,0 +1,296 @@
+[gd_scene load_steps=7 format=3 uid="uid://c06tf0fta38sr"]
+
+[ext_resource type="Script" path="res://Scripts/Client/main.cs" id="1_1kd6i"]
+[ext_resource type="PackedScene" uid="uid://ddwfvga1enr26" path="res://Visuals/cube.glb" id="2_kbyjw"]
+[ext_resource type="Script" path="res://Scripts/Client/MPlayer.cs" id="4_negpk"]
+[ext_resource type="Material" uid="uid://do6xnywx0b62x" path="res://Visuals/3dmat.tres" id="4_wikhi"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_y2qkj"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dhlam"]
+
+[node name="main" type="Node3D"]
+script = ExtResource("1_1kd6i")
+
+[node name="DirectionalLight3d" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1000, 0)
+shadow_enabled = true
+
+[node name="cube" parent="." instance=ExtResource("2_kbyjw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+visible = false
+
+[node name="material" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+visible = false
+material_override = ExtResource("4_wikhi")
+mesh = SubResource("CylinderMesh_y2qkj")
+skeleton = NodePath("../cube")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="screen_player0" type="SubViewportContainer" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/screen_player0"]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="p0" type="CharacterBody3D" parent="GridContainer/screen_player0/SubViewport"]
+input_ray_pickable = false
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+script = ExtResource("4_negpk")
+
+[node name="head" type="CharacterBody3D" parent="GridContainer/screen_player0/SubViewport/p0"]
+input_ray_pickable = false
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+platform_on_leave = 2
+
+[node name="camera" type="Camera3D" parent="GridContainer/screen_player0/SubViewport/p0/head"]
+
+[node name="testerro" type="MeshInstance3D" parent="GridContainer/screen_player0/SubViewport/p0/head/camera"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, -2.53075)
+rotation_edit_mode = 1
+mesh = SubResource("BoxMesh_dhlam")
+skeleton = NodePath("")
+
+[node name="kierunek" type="Node3D" parent="GridContainer/screen_player0/SubViewport/p0/head/camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="UI" type="Control" parent="GridContainer/screen_player0/SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="main_menu" type="Control" parent="GridContainer/screen_player0/SubViewport/UI"]
+layout_mode = 1
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="run_server" type="Button" parent="GridContainer/screen_player0/SubViewport/UI/main_menu" node_paths=PackedStringArray("shortcut_context")]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 203.0
+offset_right = 233.0
+offset_bottom = 234.0
+shortcut_context = NodePath("")
+text = "  Run server  "
+
+[node name="dnsip" type="TextEdit" parent="GridContainer/screen_player0/SubViewport/UI/main_menu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.239
+anchor_top = -1.323
+anchor_right = 1.239
+anchor_bottom = -1.323
+offset_left = 231.44
+offset_top = 163.92
+offset_right = 380.44
+offset_bottom = 198.92
+text = "localhost"
+
+[node name="offline" type="Button" parent="GridContainer/screen_player0/SubViewport/UI/main_menu" node_paths=PackedStringArray("shortcut_context")]
+layout_mode = 0
+offset_left = 126.0
+offset_top = 117.0
+offset_right = 233.0
+offset_bottom = 148.0
+shortcut_context = NodePath("../../../../../..")
+text = "Single Player"
+
+[node name="online" type="Button" parent="GridContainer/screen_player0/SubViewport/UI/main_menu"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 160.0
+offset_right = 234.0
+offset_bottom = 191.0
+text = " Multi Player "
+
+[node name="port" type="TextEdit" parent="GridContainer/screen_player0/SubViewport/UI/main_menu"]
+layout_mode = 0
+offset_left = 445.0
+offset_top = 111.0
+offset_right = 575.0
+offset_bottom = 146.0
+text = "2137"
+
+[node name="label_dnsip" type="RichTextLabel" parent="GridContainer/screen_player0/SubViewport/UI/main_menu"]
+layout_mode = 0
+offset_left = 281.0
+offset_top = 75.0
+offset_right = 424.0
+offset_bottom = 98.0
+text = "Server name / IP"
+
+[node name="label_port" type="RichTextLabel" parent="GridContainer/screen_player0/SubViewport/UI/main_menu"]
+layout_mode = 0
+offset_left = 447.0
+offset_top = 77.0
+offset_right = 521.0
+offset_bottom = 108.0
+text = "Port"
+
+[node name="split_screen" type="Button" parent="GridContainer/screen_player0/SubViewport/UI/main_menu"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 247.0
+offset_right = 223.0
+offset_bottom = 278.0
+text = " Split screen "
+
+[node name="local_players" type="RichTextLabel" parent="GridContainer/screen_player0/SubViewport/UI/main_menu"]
+layout_mode = 0
+offset_left = 327.0
+offset_top = 250.0
+offset_right = 418.0
+offset_bottom = 290.0
+text = "2"
+
+[node name="slider_split_screen" type="HSlider" parent="GridContainer/screen_player0/SubViewport/UI/main_menu"]
+layout_mode = 0
+offset_left = 243.0
+offset_top = 252.0
+offset_right = 319.0
+offset_bottom = 268.0
+min_value = 2.0
+max_value = 4.0
+value = 2.0
+
+[node name="origin" type="Node3D" parent="GridContainer/screen_player0/SubViewport"]
+
+[node name="screen_player1" type="SubViewportContainer" parent="GridContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/screen_player1"]
+handle_input_locally = false
+size = Vector2i(1152, 322)
+render_target_update_mode = 0
+
+[node name="p1" type="CharacterBody3D" parent="GridContainer/screen_player1/SubViewport"]
+input_ray_pickable = false
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+script = ExtResource("4_negpk")
+
+[node name="head" type="CharacterBody3D" parent="GridContainer/screen_player1/SubViewport/p1"]
+input_ray_pickable = false
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+platform_on_leave = 2
+
+[node name="camera" type="Camera3D" parent="GridContainer/screen_player1/SubViewport/p1/head"]
+
+[node name="testerro" type="MeshInstance3D" parent="GridContainer/screen_player1/SubViewport/p1/head/camera"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, -2.53075)
+rotation_edit_mode = 1
+mesh = SubResource("BoxMesh_dhlam")
+skeleton = NodePath("")
+
+[node name="kierunek" type="Node3D" parent="GridContainer/screen_player1/SubViewport/p1/head/camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="origin" type="Node3D" parent="GridContainer/screen_player1/SubViewport"]
+
+[node name="screen_player2" type="SubViewportContainer" parent="GridContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/screen_player2"]
+handle_input_locally = false
+size = Vector2i(574, 322)
+render_target_update_mode = 0
+
+[node name="p2" type="CharacterBody3D" parent="GridContainer/screen_player2/SubViewport"]
+input_ray_pickable = false
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+script = ExtResource("4_negpk")
+
+[node name="head" type="CharacterBody3D" parent="GridContainer/screen_player2/SubViewport/p2"]
+input_ray_pickable = false
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+platform_on_leave = 2
+
+[node name="camera" type="Camera3D" parent="GridContainer/screen_player2/SubViewport/p2/head"]
+
+[node name="testerro" type="MeshInstance3D" parent="GridContainer/screen_player2/SubViewport/p2/head/camera"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, -2.53075)
+rotation_edit_mode = 1
+mesh = SubResource("BoxMesh_dhlam")
+skeleton = NodePath("")
+
+[node name="kierunek" type="Node3D" parent="GridContainer/screen_player2/SubViewport/p2/head/camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="origin" type="Node3D" parent="GridContainer/screen_player2/SubViewport"]
+
+[node name="screen_player3" type="SubViewportContainer" parent="GridContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GridContainer/screen_player3"]
+handle_input_locally = false
+size = Vector2i(574, 648)
+render_target_update_mode = 0
+
+[node name="p3" type="CharacterBody3D" parent="GridContainer/screen_player3/SubViewport"]
+input_ray_pickable = false
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+script = ExtResource("4_negpk")
+
+[node name="head" type="CharacterBody3D" parent="GridContainer/screen_player3/SubViewport/p3"]
+input_ray_pickable = false
+slide_on_ceiling = false
+floor_stop_on_slope = false
+floor_block_on_wall = false
+platform_on_leave = 2
+
+[node name="camera" type="Camera3D" parent="GridContainer/screen_player3/SubViewport/p3/head"]
+
+[node name="testerro" type="MeshInstance3D" parent="GridContainer/screen_player3/SubViewport/p3/head/camera"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, -2.53075)
+rotation_edit_mode = 1
+mesh = SubResource("BoxMesh_dhlam")
+skeleton = NodePath("")
+
+[node name="kierunek" type="Node3D" parent="GridContainer/screen_player3/SubViewport/p3/head/camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="origin" type="Node3D" parent="GridContainer/screen_player3/SubViewport"]
+
+[connection signal="pressed" from="GridContainer/screen_player0/SubViewport/UI/main_menu/run_server" to="." method="_on_run_server_pressed"]
+[connection signal="pressed" from="GridContainer/screen_player0/SubViewport/UI/main_menu/offline" to="." method="_on_offline_pressed"]
+[connection signal="pressed" from="GridContainer/screen_player0/SubViewport/UI/main_menu/online" to="." method="_on_online_pressed"]
+[connection signal="pressed" from="GridContainer/screen_player0/SubViewport/UI/main_menu/split_screen" to="." method="_on_split_screen_pressed"]
+[connection signal="value_changed" from="GridContainer/screen_player0/SubViewport/UI/main_menu/slider_split_screen" to="." method="_on_slider_split_screen_value_changed"]
